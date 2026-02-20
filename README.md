@@ -24,3 +24,14 @@ This class demonstrates:
 ## Background
 
 I am a Full Stack Developer currently focusing on becoming an ABAP Developer and transitioning into the SAP ecosystem.
+
+## Tools used
+
+- SAP ABAP
+- Eclipse ADT (ABAP Development Tools)
+- Git & GitHub
+
+## Author
+
+Adniloet Sosa  
+Full Stack Developer transitioning into SAP ABAP Development
