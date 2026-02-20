@@ -1,0 +1,33 @@
+@EndUserText.label : 'Nachrichten'
+@AbapCatalog.enhancement.category : #NOT_CLASSIFIED
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.activationType : #NAMETAB_GENERATION_OFFLINE
+@AbapCatalog.deliveryClass : #E
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table t100 {
+
+  @AbapCatalog.textLanguage
+  @AbapCatalog.foreignKey.label : 'Sprache'
+  @AbapCatalog.foreignKey.keyType : #KEY
+  @AbapCatalog.foreignKey.screenCheck : true
+  key sprsl : spras not null
+    with foreign key [0..*,1] t002
+      where spras = t100.sprsl;
+  @AbapCatalog.foreignKey.label : 'Arbeitsgebiet'
+  @AbapCatalog.foreignKey.keyType : #KEY
+  @AbapCatalog.foreignKey.screenCheck : true
+  key arbgb : arbgb not null
+    with foreign key [0..*,1] t100a
+      where arbgb = t100.arbgb
+    with value help t100af4
+      where arbgb = t100.arbgb
+        and sprsl = t100.sprsl;
+  key msgnr : msgnr not null
+    with value help t100f4
+      where arbgb = t100.arbgb
+        and msgnr = t100.msgnr
+        and sprsl = t100.sprsl
+        and text = t100.text;
+  text      : natxt;
+
+}

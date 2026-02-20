@@ -1,0 +1,160 @@
+class cx_root definition
+  public
+  abstract
+  create public.
+
+  public section.
+    interfaces if_message.
+    interfaces if_serializable_object.
+
+    aliases get_longtext
+      for if_message~get_longtext.
+    aliases get_text
+      for if_message~get_text.
+
+    constants cx_root type sotr_conc value '16AA9A3937A9BB56E10000000A11447B'. "#EC NOTEXT
+    data textid type sotr_conc read-only.
+    data previous type ref to cx_root read-only.
+    data kernel_errid type s380errid read-only.
+    data is_resumable type abap_bool read-only.
+
+    methods constructor
+      importing
+        !textid like textid optional
+        !previous like previous optional.
+
+    methods get_source_position
+      exporting
+        !program_name type syrepid
+        !include_name type syrepid
+        !source_line type i.
+
+  protected section.
+
+  private section.
+    types:
+      begin of ty_source_pos,
+        include_name type syrepid,
+        program_name type syrepid,
+        source_line type i,
+      end of ty_source_pos.
+
+    data:
+      internal_source_pos type scx_srcpos,
+      source_pos type ty_source_pos.
+
+    methods:
+      deserialize_helper
+        importing !internal_source_pos type scx_srcpos
+                  !source_pos type ty_source_pos optional
+                  !textid type sotr_conc
+                  !previous type ref to cx_root
+                  !kernel_errid type s380errid
+                  !is_resumable type abap_bool,
+
+      serialize_helper
+        exporting !internal_source_pos type scx_srcpos
+                  !source_pos type ty_source_pos
+                  !textid type sotr_conc
+                  !previous type ref to cx_root
+                  !kernel_errid type s380errid
+                  !is_resumable type abap_bool.
+
+ENDCLASS.
+
+
+
+CLASS CX_ROOT IMPLEMENTATION.
+
+
+  method constructor.
+    if textid is initial.
+      me->textid = cx_root.
+    else.
+      me->textid = textid.
+    endif.
+    me->previous = previous.
+  endmethod.
+
+
+  method deserialize_helper.
+    clear me->internal_source_pos. " prog_id + cont_id only work in original program => set to "invalid"
+    me->source_pos   = source_pos.
+    me->textid       = textid.
+    me->previous     = previous.
+    me->kernel_errid = kernel_errid.
+    me->is_resumable = is_resumable.
+  endmethod.
+
+
+  method get_source_position.
+    if ( me->internal_source_pos is not initial  ).
+      call 'GET_SOURCE_POSITION'
+        "EXPORTING
+          id 'INTERNAL'     field me->internal_source_pos
+        "IMPORTING
+          id 'PROGRAM_NAME' field me->source_pos-program_name
+          id 'INCLUDE_NAME' field me->source_pos-include_name
+          id 'SOURCE_LINE'  field me->source_pos-source_line.
+      clear me->internal_source_pos.
+      program_name = me->source_pos-program_name.
+      include_name = me->source_pos-include_name.
+      source_line = me->source_pos-source_line.
+
+    elseif ( me->source_pos is not initial  ).
+      program_name = me->source_pos-program_name.
+      include_name = me->source_pos-include_name.
+      source_line = me->source_pos-source_line.
+
+    else.
+      " downward compatible behaviour Nov 2023
+      " exception has not been raised yet, return system default
+      call 'GET_SOURCE_POSITION'
+        "EXPORTING
+          id 'INTERNAL'     field me->internal_source_pos
+        "IMPORTING
+          id 'PROGRAM_NAME' field me->source_pos-program_name
+          id 'INCLUDE_NAME' field me->source_pos-include_name
+          id 'SOURCE_LINE'  field me->source_pos-source_line.
+      program_name = me->source_pos-program_name.
+      include_name = me->source_pos-include_name.
+      source_line = me->source_pos-source_line.
+    endif.
+  endmethod.
+
+
+  method if_message~get_longtext.
+    try.
+      call method ('CL_MESSAGE_HELPER')=>get_longtext_for_message
+        exporting text = me
+                  preserve_newlines = preserve_newlines
+        receiving result = result.
+    catch cx_root.
+      result = 'CX_ROOT: call to CL_MESSAGE_HELPER=>GET_LONGTEXT_FOR_MESSAGE failed' ##NO_TEXT.
+    endtry.
+  endmethod.
+
+
+  method if_message~get_text.
+    try.
+      call method ('CL_MESSAGE_HELPER')=>GET_TEXT_FOR_MESSAGE
+        exporting text = me
+        receiving result = result.
+    catch cx_root.
+      result = 'CX_ROOT: Call to CL_MESSAGE_HELPER=>GET_TEXT_FOR_MESSAGE failed' ##NO_TEXT.
+    endtry.
+  endmethod.
+
+
+  method serialize_helper.
+    if ( source_pos is initial ).
+      get_source_position(  ).
+    endif.
+    internal_source_pos = me->internal_source_pos.
+    source_pos          = me->source_pos.
+    textid              = me->textid.
+    previous            = me->previous.
+    kernel_errid        = me->kernel_errid.
+    is_resumable        = me->is_resumable.
+  endmethod.
+ENDCLASS.

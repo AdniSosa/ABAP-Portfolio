@@ -1,0 +1,45 @@
+CLASS z_mensajes_g17013 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS Z_MENSAJES_G17013 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+
+    PARAMETERS pa_msg TYPE c.
+
+    CASE pa_msg.
+
+      WHEN 'I'.
+        MESSAGE i014(sabapdocu).
+
+      WHEN 'S'.
+        MESSAGE s015(sabapdocu).
+
+      WHEN 'A'.
+        MESSAGE a016(sabapdocu).
+
+      WHEN OTHERS.
+       WRITE: / 'The message type does not exist.'.
+
+    ENDCASE.
+
+
+
+
+
+
+  ENDMETHOD.
+ENDCLASS.

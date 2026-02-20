@@ -1,0 +1,184 @@
+CLASS z_ope_caracteres_g17013 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS z_ope_caracteres_g17013 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+
+***********  CONCATENATE  ***********************************************************
+    DATA: gv_ejercicio      TYPE n LENGTH 4,
+          gv_no_factura     TYPE n LENGTH 8,
+          gv_codigo_factura TYPE string.
+
+    gv_ejercicio = 4587.
+    gv_no_factura = 89657852.
+
+    CONCATENATE gv_ejercicio gv_no_factura INTO gv_codigo_factura.
+
+    out->write( |'gv_ejercicio = ' { gv_ejercicio } | ).
+    out->write( |'gv_no_factura = ' { gv_no_factura } | ).
+    out->write( |'gv_codigo_factura = ' { gv_codigo_factura } | ).
+
+
+***************  CONDENSE  *******************************************************
+*DATA : gv_expediente1 TYPE string,
+*       gv_expediente2 TYPE string.
+*
+*gv_expediente1 = 'Factura de venta        con estado en trámite'.
+*gv_expediente2 = 'Factura de venta        con estado en trámite'.
+*
+*CONDENSE gv_expediente1.
+*CONDENSE gv_expediente2 NO-GAPS.
+*
+*
+*out->write( |Expediente 1: { gv_expediente1 }| ).
+*out->write( |Expediente 2: { gv_expediente2 }| ).
+
+
+****************  REPLACE  ******************************************************
+
+*DATA(gv_solicitud) = 'SAP-ABAP-32-PE'.
+*
+*REPLACE ALL OCCURRENCES OF '-' IN gv_solicitud WITH '/'.
+*
+*out->write( gv_solicitud ).
+
+
+******************  SEARCH  ****************************************************
+
+*DATA: gv_empresa TYPE string VALUE 'Sistema de producción y desarrollo'.
+*
+*SEARCH gv_empresa FOR 'PRO'.
+*
+*DATA(gv_posicion) = sy-fdpos + 1.
+*
+*out->write( gv_posicion ).
+
+
+*****************  FIND   *****************************************************
+*DATA: gv_v_text TYPE string,
+*      gv_v_cnt TYPE i.
+*
+*gv_v_text = 'Sistema # 1 de producción y desarrollo #2025'.
+*
+*FIND ALL OCCURRENCES OF '#' IN gv_v_text MATCH COUNT gv_v_cnt.
+*
+*out->write( |Número de veces que se encuentra '#' --> { gv_v_cnt }| ).
+*
+
+
+*******************  SHIFT  ***************************************************
+*DATA(gv_num_factura) = '2015ABCD'.
+*
+*gv_num_factura = shift_left( val = gv_num_factura places = 2 ).
+*
+*out->write( gv_num_factura ).
+
+
+******************  TRANSLATE  ****************************************************
+*DATA(gv_frase) = 'SAP ABAP Programación estructurada'.
+*
+*TRANSLATE gv_frase TO UPPER CASE.
+*
+*out->write( gv_frase ).
+
+*******************  SPLIT  ***************************************************
+
+*DATA gv_registro TYPE string VALUE 'Ejercicio;2020;Sociedad;SAP'.
+*
+*
+*SPLIT gv_registro AT ';' INTO DATA(gv_campo1)
+*                              DATA(gv_campo2)
+*                              DATA(gv_campo3)
+*                              DATA(gv_campo4).
+*
+*out->write( |Campo 1 = { gv_campo1 }| ).
+*out->write( |Campo 2 = { gv_campo2 }| ).
+*out->write( |Campo 3 = { gv_campo3 }| ).
+*out->write( |Campo 4 = { gv_campo4 }| ).
+
+
+
+************  SUBSTRING  **********************************************************
+
+*DATA gv_result TYPE string VALUE 'Logali Group'.
+*
+*gv_result = substring_from( val = gv_result sub = 'ga' ).
+*
+*out->write( |FROM = { gv_result }| ).
+*
+*gv_result = 'Logali Group'.
+*
+*gv_result = substring_after( val = gv_result sub = 'ga' ).
+*
+*out->write( |AFTER = { gv_result }| ).
+*
+*gv_result = 'Logali Group'.
+*
+*gv_result = substring_before( val = gv_result sub = 'ga' ).
+*
+*out->write( |BEFORE = { gv_result }| ).
+*
+*gv_result = 'Logali Group'.
+*
+*gv_result = substring_to( val = gv_result sub = 'ga' ).
+*
+*out->write( |TO = { gv_result }| ).
+*
+
+
+***************  CONV  *******************************************************
+*DATA: gv_int TYPE f,
+*      gv_int2 TYPE i.
+*
+*gv_int = sqrt( 5 ) + sqrt( 6 ).
+*gv_int2 = CONV i( sqrt( 5 ) ) + CONV i( sqrt( 6 ) ).
+*
+*out->write( |gv_int2 = { gv_int2 }| ).
+
+
+*****************  ALPHA  *****************************************************
+
+
+*DATA: gv_dato TYPE c LENGTH 10 VALUE '0000012345',
+*      gv_dato1 TYPE c LENGTH 10 VALUE '12345'.
+*
+*gv_dato = |{ gv_dato ALPHA = OUT }|.
+*gv_dato1 = |{ gv_dato1 ALPHA = IN }|.
+*
+*out->write( |DATO = { gv_dato }| ).
+*out->write( |DATO 1 = { gv_dato1 }| ).
+
+
+
+*************  REGEX  *********************************************************
+
+*    DATA(lv_regex2) = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'.
+*    DATA(lv_email) = 'holatodos@hola.com'.
+*
+*    FIND REGEX lv_regex2 IN lv_email.
+*
+*    IF sy-subrc EQ 0.
+*      out->write( 'Correo válido.' ).
+*    ELSE.
+*      out->write( 'Correo no válido' ).
+*    ENDIF.
+
+
+
+
+  ENDMETHOD.
+ENDCLASS.

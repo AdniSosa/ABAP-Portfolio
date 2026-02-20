@@ -1,0 +1,155 @@
+*"* use this source file for your abap unit test classes
+class ltcl_classrun definition final for testing
+  duration short
+  risk level harmless.
+
+  private section.
+    methods: test_constructor_sets_out for testing raising cx_static_check,
+      test_new                  for testing raising cx_static_check,
+      get_demo_output           for testing raising cx_static_check,
+      write_name_supplied       for testing raising cx_static_check,
+    write_no_name_supplied FOR TESTING RAISING cx_static_check,
+    get_name_supplied FOR TESTING RAISING cx_static_check,
+    get_only_data_supplied FOR TESTING RAISING cx_static_check,
+    get_no_name_and_no_data_suplid FOR TESTING RAISING cx_static_check,
+    write_calls_can_be_chained FOR TESTING RAISING cx_static_check.
+endclass.
+
+class cl_oo_adt_classrun_output definition local friends ltcl_classrun.
+
+class ltcl_classrun implementation.
+  method test_constructor_sets_out.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+    data(demo_output) = cut->lo_demo_output.
+    if demo_output is not instance of cl_demo_output.
+      cl_abap_unit_assert=>fail( 'the demo_output is not of type cl_demo_output' ).
+    endif.
+  endmethod.
+
+
+  method test_new.
+    data(output) = cl_oo_adt_classrun_output=>new( ).
+    if output is not instance of cl_oo_adt_classrun_output.
+      cl_abap_unit_assert=>fail( 'the output is not of type cl_oo_adt_classrun_output' ).
+    endif.
+    data(demo_output) = cast cl_oo_adt_classrun_output( output )->lo_demo_output.
+    if demo_output is not instance of cl_demo_output.
+      cl_abap_unit_assert=>fail( 'the demo_output is not of type cl_demo_output' ).
+    endif.
+  endmethod.
+
+
+  method get_demo_output.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+    data(demo_output) = cut->get_demo_output( ).
+    if demo_output is initial.
+      cl_abap_unit_assert=>fail( 'the demo_output should not be initial' ).
+    endif.
+  endmethod.
+
+
+  method get_name_supplied.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_get type string.
+    data name type string.
+    data string_to_return type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( string_to_return )->and_expect( )->is_called_once( ).
+    if_demo_output_mock->get( data = string_to_get
+                                name = name ).
+    cut->lo_demo_output = if_demo_output_mock.
+
+    data(output) = cut->if_oo_adt_classrun_out~get( data = string_to_get name = name ).
+
+    cl_abap_unit_assert=>assert_equals( act = output exp = string_to_return ).
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+
+  method get_only_data_supplied.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_get type string.
+    data string_to_return type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( string_to_return )->and_expect( )->is_called_once( ).
+    if_demo_output_mock->get( data = string_to_get ).
+    cut->lo_demo_output = if_demo_output_mock.
+
+    data(output) = cut->if_oo_adt_classrun_out~get( data = string_to_get ).
+
+    cl_abap_unit_assert=>assert_equals( act = output exp = string_to_return ).
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+
+  method get_no_name_and_no_data_suplid.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_return type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( string_to_return )->and_expect( )->is_called_once( ).
+    if_demo_output_mock->get( ).
+    cut->lo_demo_output = if_demo_output_mock.
+
+    data(output) = cut->if_oo_adt_classrun_out~get(  ).
+
+    cl_abap_unit_assert=>assert_equals( act = output exp = string_to_return ).
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+
+  method write_name_supplied.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_write type string.
+    data name type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( if_demo_output_mock )->and_expect( )->is_called_once( ).
+    if_demo_output_mock->write( data = string_to_write
+                                name = name ).
+    cut->lo_demo_output = if_demo_output_mock.
+
+    data(cut2) = cut->if_oo_adt_classrun_out~write( data = string_to_write name = name ).
+
+    cl_abap_unit_assert=>assert_equals( act = cut2 exp = cut ).
+
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+
+  method write_calls_can_be_chained.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_write type string.
+    data name type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( if_demo_output_mock )->and_expect( )->is_called_times( 3 ).
+    if_demo_output_mock->write( data = string_to_write
+                                name = name ).
+    cut->lo_demo_output = if_demo_output_mock.
+
+    cut->if_oo_adt_classrun_out~write( data = string_to_write name = name )->write( data = string_to_write name = name )->write( data = string_to_write name = name ).
+
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+
+  method write_no_name_supplied.
+    data(cut) = new cl_oo_adt_classrun_output( ).
+
+    data string_to_write type string.
+    data if_demo_output_mock type ref to if_demo_output.
+    if_demo_output_mock ?= cl_abap_testdouble=>create( `if_demo_output` ).
+    cl_abap_testdouble=>configure_call( if_demo_output_mock )->returning( if_demo_output_mock )->and_expect( )->is_called_once( ).
+    if_demo_output_mock->write( data = string_to_write ).
+
+    cut->lo_demo_output = if_demo_output_mock.
+
+    data(cut2) = cut->if_oo_adt_classrun_out~write( data = string_to_write ).
+
+    cl_abap_unit_assert=>assert_equals( act = cut2 exp = cut ).
+    cl_abap_testdouble=>verify_expectations( if_demo_output_mock ).
+  endmethod.
+endclass.

@@ -1,0 +1,93 @@
+CLASS z_sentencias_g17013 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS z_sentencias_g17013 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+*  DATA : gv_tarifa_bas TYPE i VALUE 20,
+*         gv_tarifa_area_corp TYPE i VALUE 10,
+*         gv_tarifa_ser_medico TYPE i VALUE 15,
+*         gv_tarifa_total TYPE i.
+*
+*  gv_tarifa_total = gv_tarifa_area_corp + gv_tarifa_bas + gv_tarifa_ser_medico.
+*
+*  ADD 5 TO gv_tarifa_total.
+*
+*  out->write( |Tarifa total: { gv_tarifa_total }| ).
+
+*DATA : gv_tarifa_mantenimiento TYPE i VALUE 30,
+*       gv_tariga_margen TYPE i VALUE 10,
+*       gv_tarifa_base TYPE i.
+*
+*gv_tarifa_base = gv_tarifa_mantenimiento - gv_tariga_margen.
+*
+*SUBTRACT 4 TO gv_tarifa_base.
+*
+*out->write( |Tarifa base: { gv_tarifa_base }| ).
+*
+
+*DATA : gv_tarifa_soc_fi TYPE i VALUE 2,
+*       gv_tarifa_soc_co TYPE i VALUE 3,
+*       gv_tarifa_multi TYPE i.
+*
+*gv_tarifa_multi = gv_tarifa_soc_fi * gv_tarifa_soc_co.
+*
+*MULTIPLY gv_tarifa_multi BY 2.
+*
+*out->write( |Tarifa Multi: { gv_tarifa_multi }| ).
+
+
+*DATA : gv_tarifa_ejercicio TYPE i VALUE 38,
+*       gv_tarifa_periodo TYPE i VALUE 4,
+*       gv_tarifa_aplicada TYPE p LENGTH 8 DECIMALS 2.
+*
+*       gv_tarifa_aplicada = gv_tarifa_ejercicio / gv_tarifa_periodo.
+*
+*       DIVIDE gv_tarifa_aplicada BY 3.
+*
+*       out->write( |Tarifa aplicada: { gv_tarifa_aplicada }| ).
+
+
+*DATA : gv_num_a TYPE i VALUE 17,
+*       gv_num_b TYPE i VALUE 4,
+*       gv_resultado TYPE p LENGTH 4 DECIMALS 2.
+*
+*       gv_resultado = gv_num_a DIV gv_num_b.
+*
+*       out->write( |Resultado: { gv_resultado }| ).
+
+*
+*    DATA : gv_num_c TYPE i VALUE 19,
+*           gv_num_d TYPE i VALUE 4,
+*           gv_resto TYPE p LENGTH 4 DECIMALS 2.
+*
+*    gv_resto = gv_num_c MOD gv_num_d.
+*
+*    out->write( |Resto: { gv_resto }| ).
+
+    DATA gv_numero TYPE i VALUE 5.
+
+    DATA(gv_expo) = gv_numero ** 2.
+
+    out->write( |Expo: { gv_expo }| ).
+
+    gv_expo = sqrt( gv_expo ).
+
+    out->write( |Raíz cuadrada: { gv_expo }| ).
+
+
+  ENDMETHOD.
+ENDCLASS.

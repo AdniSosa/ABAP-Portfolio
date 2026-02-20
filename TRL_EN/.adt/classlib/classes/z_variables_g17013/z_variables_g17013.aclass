@@ -1,0 +1,81 @@
+CLASS z_variables_g17013 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS z_variables_g17013 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+    DATA : gv_fecha TYPE d VALUE '20251127',
+           gv_hora  TYPE t VALUE '124500'.
+
+    DATA : gv_iva     TYPE i VALUE 7,
+           gv_reparto TYPE f VALUE '18.95'.
+
+    out->write( |Iva: { gv_iva } / Reparto: { gv_reparto } | ).
+
+
+    DATA : gv_impuesto_direct    TYPE decfloat16 VALUE '18564.6856',
+           gv_impuesto_indirecto TYPE decfloat34 VALUE '5483786.684'.
+
+    out->write( |Impuesto directo: { gv_impuesto_direct }| ).
+    out->write( |Impuesto indirecto: { gv_impuesto_indirecto }| ).
+
+    DATA : gv_nombre      TYPE string VALUE 'Adni',
+           gv_hexadecimal TYPE xstring VALUE '45F7A2'.
+
+    out->write( |Nombre: { gv_nombre }| ).
+    out->write( |Hexadecimal: { gv_hexadecimal }| ).
+
+    DATA : gv_sociedad TYPE c LENGTH 6 VALUE 'LOGALI',
+           gv_tarifa   TYPE p LENGTH 8 DECIMALS 2 VALUE '1489.36'.
+
+    out->write( |Sociedad: { gv_sociedad } / Tarifa: { gv_tarifa }| ).
+
+    DATA : gv_codigo_sociedad TYPE n LENGTH 4 VALUE 8,
+           gv_datos           TYPE x LENGTH 5 VALUE 'D862'.
+
+    out->write( |Código sociedad: { gv_codigo_sociedad }| ).
+    out->write( |Datos: { gv_datos }| ).
+
+    CONSTANTS : gc_date       TYPE d VALUE '20230104',
+                gc_time       TYPE t VALUE '153325',
+                gc_integer    TYPE i VALUE 896,
+                gc_floating   TYPE f VALUE '55.33',
+                gc_float16    TYPE decfloat16 VALUE '457.2',
+                gc_float34    TYPE decfloat34 VALUE '78245.146',
+                gc_string     TYPE string VALUE 'tomate',
+                gc_xstring    TYPE xstring VALUE '8A53',
+                gc_characters TYPE c LENGTH 10 VALUE 'California',
+                gc_num_emp    TYPE p LENGTH 8 DECIMALS 3 VALUE '7458.256',
+                gc_char_num   TYPE n LENGTH 5 VALUE '568',
+                gc_bytes      TYPE x LENGTH 7 VALUE '2635DD'.
+
+    out->write( |Date: { gc_date DATE = USER } | ).
+    out->write( |Time: { gc_time TIME = USER }| ).
+    out->write( |Integer: { gc_integer }| ).
+    out->write( |Floating: { gc_floating }| ).
+    out->write( |Float16: { gc_float16 }| ).
+    out->write( |Float34: { gc_float34 }| ).
+    out->write( |String: { gc_string }| ).
+    out->write( |Xstring: { gc_xstring }| ).
+    out->write( |Characters: { gc_characters }| ).
+    out->write( |Número empaquetado: { gc_num_emp }| ).
+    out->write( |Caracteres N: { gc_char_num }| ).
+    out->write( |Bytes: { gc_bytes }| ).
+
+
+
+  ENDMETHOD.
+ENDCLASS.

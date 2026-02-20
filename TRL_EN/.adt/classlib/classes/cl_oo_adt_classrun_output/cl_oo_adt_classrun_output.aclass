@@ -1,0 +1,74 @@
+class CL_OO_ADT_CLASSRUN_OUTPUT definition
+  public
+  final
+  create private
+
+  global friends CL_OO_ADT_RES_CLASSRUN .
+
+public section.
+
+  interfaces IF_OO_ADT_CLASSRUN_OUT .
+
+  constants HTML_MODE type STRING value CL_DEMO_OUTPUT=>HTML_MODE ##NO_TEXT.
+  constants TEXT_MODE type STRING value CL_DEMO_OUTPUT=>TEXT_MODE ##NO_TEXT.
+
+  methods CONSTRUCTOR
+    importing
+      !MODE type STRING default TEXT_MODE .
+  methods GET_DEMO_OUTPUT
+    returning
+      value(OUT) type ref to IF_DEMO_OUTPUT .
+private section.
+
+  data LO_DEMO_OUTPUT type ref to IF_DEMO_OUTPUT .
+
+  class-methods NEW
+    importing
+      !MODE type STRING default TEXT_MODE
+    returning
+      value(OUTPUT) type ref to IF_OO_ADT_CLASSRUN_OUT .
+ENDCLASS.
+
+
+
+CLASS CL_OO_ADT_CLASSRUN_OUTPUT IMPLEMENTATION.
+
+
+  method constructor.
+    lo_demo_output = cl_demo_output=>new( mode ).
+    cl_demo_output=>classrun_output = ' '.
+  endmethod.
+
+
+  METHOD get_demo_output.
+    cl_demo_output=>classrun_output = 'X'.
+    out = lo_demo_output.
+  ENDMETHOD.
+
+
+  method if_oo_adt_classrun_out~get.
+    if name is supplied.
+      output = lo_demo_output->get( name = name data = data ).
+    elseif data is supplied.
+      output = lo_demo_output->get( data = data ).
+    else.
+      output = lo_demo_output->get( ).
+    endif.
+  endmethod.
+
+
+  method if_oo_adt_classrun_out~write.
+    if name is supplied.
+      lo_demo_output->write( data = data
+                             name = name ).
+    else.
+      lo_demo_output->write( data = data ).
+    endif.
+    output = me.
+  endmethod.
+
+
+  method new.
+    output = new cl_oo_adt_classrun_output( mode = mode ).
+  endmethod.
+ENDCLASS.
